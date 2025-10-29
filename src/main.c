@@ -17,6 +17,9 @@
 // man database guncelleme
 // mandb
 
+// git submodule eklemek icin
+// git submodule add https://github.com/42paris/minilibx-linux
+
 size_t	ft_strlen(const char *s)
 {
 	size_t	len;
