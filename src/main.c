@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/10/29 08:22:37 by yuyumaz           #+#    #+#             */
+/*   Updated: 2025/10/29 08:28:15 by yuyumaz          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include "../minilibx-linux/mlx.h"
-
+#include "logger/logger.h"
 
 // destroy sirasi
 // image, window, display
@@ -19,6 +31,9 @@
 
 // git submodule eklemek icin
 // git submodule add https://github.com/42paris/minilibx-linux
+
+// submodule'ler ile birlikte git clone
+// git clone --recurse-submodules <repo-url>
 
 size_t	ft_strlen(const char *s)
 {
@@ -38,23 +53,22 @@ void	ft_putstr(int fd, const char *s)
 	(void) write(fd, s, len);
 }
 
+// TODO line 68: maybe garbage collecting in the future??
 int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
 	void	*mlx_ptr;
 	void	*win_ptr;
 
 	mlx_ptr = mlx_init();
-
 	if (!mlx_ptr)
 	{
 		ft_putstr(STDERR_FILENO, "mlx init failed!\n");
 		return (1);
 	}
 	ft_putstr(STDOUT_FILENO, "mlx initialized!\n");
-	win_ptr = mlx_new_window(mlx_ptr, 300, 300, "Selamu-Aleykum...");
+	win_ptr = mlx_new_window(mlx_ptr, 300, 300, "Hello, World!");
 	if (!win_ptr)
 	{
-		// TODO maybe garbage collecting in the future??
 		ft_putstr(STDERR_FILENO, "Window create failed!\n");
 		if (mlx_ptr)
 		{
@@ -65,8 +79,6 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 	}
 	ft_putstr(STDOUT_FILENO, "Window created!\n");
 	sleep(2);
-
-	// Cleanup
 	if (win_ptr)
 		mlx_destroy_window(mlx_ptr, win_ptr);
 	if (mlx_ptr)
