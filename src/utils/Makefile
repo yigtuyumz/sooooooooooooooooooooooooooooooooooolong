@@ -2,9 +2,9 @@ CC	:= cc
 CFLAGS	:= -Wall -Wextra -Werror
 AR	:= ar
 ARFLAGS := rcs
-SRC	:= logger.c
+SRC	:= utils.c
 OBJ	:= $(SRC:.c=.o)
-NAME	:= logger.a
+NAME	:= utils.a
 
 all: $(NAME)
 

@@ -6,15 +6,16 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:22:37 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/10/29 08:28:15 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/10/31 19:20:26 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <unistd.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "../minilibx-linux/mlx.h"
-#include "logger/logger.h"
+#include "mlx.h"
+#include "logger.h"
+#include "utils.h"
 
 // destroy sirasi
 // image, window, display
@@ -35,24 +36,6 @@
 // submodule'ler ile birlikte git clone
 // git clone --recurse-submodules <repo-url>
 
-size_t	ft_strlen(const char *s)
-{
-	size_t	len;
-
-	len = 0;
-	while (*(s + len))
-		len++;
-	return (len);
-}
-
-void	ft_putstr(int fd, const char *s)
-{
-	size_t	len;
-
-	len = ft_strlen(s);
-	(void) write(fd, s, len);
-}
-
 // TODO line 68: maybe garbage collecting in the future??
 int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
@@ -62,14 +45,14 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
 	{
-		ft_putstr(STDERR_FILENO, "mlx init failed!\n");
+		utils_putstr(STDERR_FILENO, "mlx init failed!\n");
 		return (1);
 	}
-	ft_putstr(STDOUT_FILENO, "mlx initialized!\n");
+	utils_putstr(STDOUT_FILENO, "mlx initialized!\n");
 	win_ptr = mlx_new_window(mlx_ptr, 300, 300, "Hello, World!");
 	if (!win_ptr)
 	{
-		ft_putstr(STDERR_FILENO, "Window create failed!\n");
+		utils_putstr(STDERR_FILENO, "Window create failed!\n");
 		if (mlx_ptr)
 		{
 			mlx_destroy_display(mlx_ptr);
@@ -77,7 +60,7 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 		}
 		return (2);
 	}
-	ft_putstr(STDOUT_FILENO, "Window created!\n");
+	utils_putstr(STDOUT_FILENO, "Window created!\n");
 	sleep(2);
 	if (win_ptr)
 		mlx_destroy_window(mlx_ptr, win_ptr);

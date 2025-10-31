@@ -60,3 +60,6 @@ solong
 _*.c
 *.pdf
 .vscode/
+*.txt
+test.c
+
