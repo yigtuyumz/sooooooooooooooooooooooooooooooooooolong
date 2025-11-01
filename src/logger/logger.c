@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:29 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/01 22:57:04 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/01 23:07:47 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ int	open_fd(const char *path)
 
 	if (!path)
 		return (LOGGER_FD_FALLBACK);
-	fd = open(path, O_WRONLY | O_CREAT | O_APPEND);
+	fd = open(path, O_WRONLY | O_CREAT | O_APPEND, 0644);
 	if (fd < 0)
 		return (LOGGER_FD_FALLBACK);
 	return (fd);

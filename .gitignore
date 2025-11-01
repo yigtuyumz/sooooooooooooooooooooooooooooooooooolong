@@ -62,4 +62,4 @@ _*.c
 .vscode/
 *.txt
 test.c
-
+*.log

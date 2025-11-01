@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:22:37 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/01 22:58:39 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/01 23:09:15 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,9 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
+	t_logger	*logger;
 
+	logger = logger_init("out.log", "err.log", "info.log", "warn.log");
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
 	{
@@ -69,5 +71,6 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 		mlx_destroy_display(mlx_ptr);
 		free(mlx_ptr);
 	}
+	logger_destroy(logger);
 	return (0);
 }
