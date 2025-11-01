@@ -1,27 +1,30 @@
 # The := operator creates static (simply expanded) variables.
 # Their values are evaluated only once, not recalculated each time they are used.
-CC			:= cc
-CFLAGS			:= -Wall -Wextra -Werror
-NAME			:= solong
+CC				:=	cc
+CFLAGS			:=	-Wall -Wextra -Werror
+NAME			:=	solong
 
-MLX_DIR			:= minilibx-linux
-MLX_LIB			:= $(MLX_DIR)/libmlx.a
-MLX_FLAGS		:= -L$(MLX_DIR) -lmlx -lXext -lX11 -lm
+MLX_DIR			:=	minilibx-linux
+MLX_LIB			:=	$(MLX_DIR)/libmlx.a
+MLX_FLAGS		:=	-L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
-UTILS_DIR		:= src/utils
-UTILS_LIB		:= $(UTILS_DIR)/utils.a
+UTILS_DIR		:=	src/utils
+UTILS_SRC		:=	$(UTILS_DIR)/utils.c
+UTILS_LIB		:=	$(UTILS_DIR)/utils.a
 
-LOGGER_DIR		:= src/logger
-LOGGER_LIB		:= $(LOGGER_DIR)/logger.a
+LOGGER_DIR		:=	src/logger
+LOGGER_SRC		:=	$(LOGGER_DIR)/logger.c	\
+					$(LOGGER_DIR)/strings.c
+LOGGER_LIB		:=	$(LOGGER_DIR)/logger.a
 
-SRC_DIR			:= src
-OBJ_DIR			:= obj
-SRC_FILES		:= main.c
-SRC			:= $(addprefix $(SRC_DIR)/, $(SRC_FILES))
-OBJ			:= $(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
+SRC_DIR			:=	src
+OBJ_DIR			:=	obj
+SRC_FILES		:=	main.c
+SRC				:=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
+OBJ				:=	$(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
-INCLUDES		:= -I$(MLX_DIR) -I$(LOGGER_DIR) -I$(UTILS_DIR)
-LIBS			:= $(MLX_LIB) $(LOGGER_LIB) $(UTILS_LIB)
+INCLUDES		:=	-I$(MLX_DIR) -I$(LOGGER_DIR) -I$(UTILS_DIR)
+LIBS			:=	$(MLX_LIB) $(LOGGER_LIB) $(UTILS_LIB)
 
 all: $(NAME)
 
@@ -39,10 +42,10 @@ $(OBJ_DIR):
 $(MLX_LIB):
 	$(MAKE) -C $(MLX_DIR)
 
-$(LOGGER_LIB):
+$(LOGGER_LIB): $(LOGGER_SRC)
 	$(MAKE) -C $(LOGGER_DIR)
 
-$(UTILS_LIB):
+$(UTILS_LIB): $(UTILS_SRC)
 	$(MAKE) -C $(UTILS_DIR)
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:29 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/10/29 08:26:36 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/01 22:57:04 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,39 @@ int	open_fd(const char *path)
 
 	if (!path)
 		return (LOGGER_FD_FALLBACK);
-	fd = open(path, O_RDONLY | O_CREAT);
+	fd = open(path, O_WRONLY | O_CREAT | O_APPEND);
 	if (fd < 0)
 		return (LOGGER_FD_FALLBACK);
 	return (fd);
 }
 
-t_logger	*logger_init(const char **list)
+void	close_fd(int fildes)
+{
+	if (fildes > LOGGER_FD_FALLBACK)
+		(void) close(fildes);
+}
+
+t_logger	*logger_init(const char *out, const char *err, const char *info, const char *warn)
 {
 	t_logger	*logger;
 
 	logger = (t_logger *) malloc(sizeof(t_logger));
 	if (!logger)
 		return (NULL);
-	logger->fd_out = open_fd(list[0]);
-	logger->fd_err = open_fd(list[1]);
-	logger->fd_info = open_fd(list[2]);
-	logger->fd_warn = open_fd(list[3]);
+	logger->fd_out = open_fd(out);
+	logger->fd_err = open_fd(err);
+	logger->fd_info = open_fd(info);
+	logger->fd_warn = open_fd(warn);
 	return (logger);
 }
 
-ssize_t	wood(int fd, const char *msg)
+void	logger_destroy(t_logger *logger)
 {
-	return (write(fd, msg, 1));	//! TODO IMPLEMENT ME
+	if (!logger)
+		return ;
+	close_fd(logger->fd_out);
+	close_fd(logger->fd_err);
+	close_fd(logger->fd_info);
+	close_fd(logger->fd_warn);
+	free(logger);
 }

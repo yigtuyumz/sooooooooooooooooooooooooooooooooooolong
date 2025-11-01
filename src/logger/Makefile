@@ -1,10 +1,11 @@
-CC	:= cc
-CFLAGS	:= -Wall -Wextra -Werror
-AR	:= ar
-ARFLAGS := rcs
-SRC	:= logger.c
-OBJ	:= $(SRC:.c=.o)
-NAME	:= logger.a
+CC		:=	cc
+CFLAGS	:=	-Wall -Wextra -Werror
+AR		:=	ar
+ARFLAGS	:=	rcs
+SRC		:=	logger.c	\
+			strings.c
+OBJ		:=	$(SRC:.c=.o)
+NAME	:=	logger.a
 
 all: $(NAME)
 
