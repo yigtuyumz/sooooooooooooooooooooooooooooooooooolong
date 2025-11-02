@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:29 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/01 23:07:47 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/02 04:19:52 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,10 @@
 #include <fcntl.h>
 #include "logger.h"
 
-int	open_fd(const char *path)
+// Heavily inspired the concept of `Dependency Injection`.
+// https://devmethodologies.blogspot.com/2012/07/dependency-injection.html
+// And the design of lib logger, kinda includes it.
+int	open_logfile(const char *path)
 {
 	int	fd;
 
@@ -27,33 +30,34 @@ int	open_fd(const char *path)
 	return (fd);
 }
 
-void	close_fd(int fildes)
+void	close_logfile(int fd)
 {
-	if (fildes > LOGGER_FD_FALLBACK)
-		(void) close(fildes);
+	if (fd > 2)
+		(void) close(fd);
 }
 
-t_logger	*logger_init(const char *out, const char *err, const char *info, const char *warn)
+t_logger	*init_logger(void (*init_hook)(void *arg))
 {
 	t_logger	*logger;
 
 	logger = (t_logger *) malloc(sizeof(t_logger));
 	if (!logger)
 		return (NULL);
-	logger->fd_out = open_fd(out);
-	logger->fd_err = open_fd(err);
-	logger->fd_info = open_fd(info);
-	logger->fd_warn = open_fd(warn);
+	logger->errfile = LOGGER_FD_FALLBACK;
+	logger->outfile = LOGGER_FD_FALLBACK;
+	if (init_hook)
+		init_hook((void *) logger);
 	return (logger);
 }
 
-void	logger_destroy(t_logger *logger)
+void	destroy_logger(t_logger **logger, void (*cleanup_hook)(void *arg))
 {
-	if (!logger)
+	if (!logger || !(*logger))
 		return ;
-	close_fd(logger->fd_out);
-	close_fd(logger->fd_err);
-	close_fd(logger->fd_info);
-	close_fd(logger->fd_warn);
-	free(logger);
+	if (cleanup_hook)
+		cleanup_hook((void *) *logger);
+	close_logfile((*logger)->errfile);
+	close_logfile((*logger)->outfile);
+	free(*logger);
+	*logger = NULL;
 }

@@ -9,7 +9,8 @@ MLX_LIB			:=	$(MLX_DIR)/libmlx.a
 MLX_FLAGS		:=	-L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
 UTILS_DIR		:=	src/utils
-UTILS_SRC		:=	$(UTILS_DIR)/utils.c
+UTILS_SRC		:=	$(UTILS_DIR)/utils.c	\
+					$(UTILS_DIR)/utils_date.c
 UTILS_LIB		:=	$(UTILS_DIR)/utils.a
 
 LOGGER_DIR		:=	src/logger

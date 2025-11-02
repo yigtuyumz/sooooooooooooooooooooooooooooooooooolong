@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:22:37 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/01 23:09:15 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/02 04:50:35 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,25 +36,52 @@
 // submodule'ler ile birlikte git clone
 // git clone --recurse-submodules <repo-url>
 
+void	logger_init_hook(void *arg)
+{
+	t_logger	*logger;
+
+	logger = (t_logger *) arg;
+	logger->errfile = open_logfile("err.log");
+	logger->outfile = open_logfile("out.log");
+	utils_putstr(logger->outfile, "\n\n");
+	utils_putdate(logger->outfile);
+	if (logger->outfile != LOGGER_FD_FALLBACK)
+	{
+		utils_putstr(logger->outfile, "============== LOGGER INITIALIZED ============\n");
+	}
+	else
+		utils_putstr(logger->outfile, "============== LOGGER INIT FAILED, OUTPUTS TO STDERR ==============\n");
+}
+
+void	logger_destroy_hook(void *arg)
+{
+	t_logger	*logger;
+
+	logger = (t_logger *) arg;
+	utils_putdate(logger->outfile);
+	utils_putstr(logger->outfile, "============== LOGGER SHUTDOWN ==============\n");
+}
+
 // TODO line 68: maybe garbage collecting in the future??
+// TODO: add LOGGER.log method, which displays timestamp in each log
 int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
 	void		*mlx_ptr;
 	void		*win_ptr;
 	t_logger	*logger;
 
-	logger = logger_init("out.log", "err.log", "info.log", "warn.log");
+	logger = init_logger(logger_init_hook);
 	mlx_ptr = mlx_init();
 	if (!mlx_ptr)
 	{
-		utils_putstr(STDERR_FILENO, "mlx init failed!\n");
+		utils_putstr(logger->outfile, "mlx init failed!\n");
 		return (1);
 	}
-	utils_putstr(STDOUT_FILENO, "mlx initialized!\n");
+	utils_putstr(logger->outfile, "mlx initialized!\n");
 	win_ptr = mlx_new_window(mlx_ptr, 300, 300, "Hello, World!");
 	if (!win_ptr)
 	{
-		utils_putstr(STDERR_FILENO, "Window create failed!\n");
+		utils_putstr(logger->outfile, "Window create failed!\n");
 		if (mlx_ptr)
 		{
 			mlx_destroy_display(mlx_ptr);
@@ -62,7 +89,7 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 		}
 		return (2);
 	}
-	utils_putstr(STDOUT_FILENO, "Window created!\n");
+	utils_putstr(logger->outfile, "Window created!\n");
 	sleep(2);
 	if (win_ptr)
 		mlx_destroy_window(mlx_ptr, win_ptr);
@@ -71,6 +98,7 @@ int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 		mlx_destroy_display(mlx_ptr);
 		free(mlx_ptr);
 	}
-	logger_destroy(logger);
+	utils_putstr(logger->outfile, "LOG = WOOD ?\n");
+	destroy_logger(&logger, logger_destroy_hook);
 	return (0);
 }

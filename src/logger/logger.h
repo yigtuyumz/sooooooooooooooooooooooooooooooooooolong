@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:17 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/01 22:57:22 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/02 01:07:47 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,29 +21,19 @@
 #  define STDERR_FILENO 2
 # endif
 
+# define LOGGER_OUT "out.log"
+# define LOGGER_ERR "err.log"
 # define LOGGER_FD_FALLBACK STDERR_FILENO
-
-# define LOG_OUT  0b00000001
-# define LOG_ERR  0b00000010
-# define LOG_INFO 0b00000100
-# define LOG_WARN 0b00001000
 
 typedef struct s_logger
 {
-	int	fd_out;
-	int	fd_err;
-	int	fd_info;
-	int	fd_warn;
+	int		errfile;
+	int		outfile;
+	void	(*hook)(void *arg);
 }	t_logger;
 
-int			open_fd(const char *path);
-void		close_fd(int fildes);
-t_logger	*logger_init(
-				const char *out,
-				const char *err,
-				const char *info,
-				const char *warn
-				);
-void		logger_destroy(t_logger *logger);
-
+int			open_logfile(const char *path);
+void		close_logfile(int fd);
+t_logger	*init_logger(void (*init_hook)(void *arg));
+void		destroy_logger(t_logger **logger, void (*cleanup_hook)(void *arg));
 #endif
