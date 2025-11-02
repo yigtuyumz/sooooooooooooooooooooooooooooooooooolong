@@ -2,7 +2,8 @@ CC	:= cc
 CFLAGS	:= -Wall -Wextra -Werror
 AR	:= ar
 ARFLAGS := rcs
-SRC	:= utils.c
+SRC	:=	utils.c	\
+		utils_date.c
 OBJ	:= $(SRC:.c=.o)
 NAME	:= utils.a
 
