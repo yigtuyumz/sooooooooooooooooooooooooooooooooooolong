@@ -14,8 +14,7 @@ UTILS_SRC		:=	$(UTILS_DIR)/utils.c	\
 UTILS_LIB		:=	$(UTILS_DIR)/utils.a
 
 LOGGER_DIR		:=	src/logger
-LOGGER_SRC		:=	$(LOGGER_DIR)/logger.c	\
-					$(LOGGER_DIR)/strings.c
+LOGGER_SRC		:=	$(LOGGER_DIR)/logger.c
 LOGGER_LIB		:=	$(LOGGER_DIR)/logger.a
 
 SRC_DIR			:=	src

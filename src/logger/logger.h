@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:17 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 01:07:47 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/02 05:00:36 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,6 @@
 #  define STDERR_FILENO 2
 # endif
 
-# define LOGGER_OUT "out.log"
-# define LOGGER_ERR "err.log"
 # define LOGGER_FD_FALLBACK STDERR_FILENO
 
 typedef struct s_logger

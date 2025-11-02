@@ -6,12 +6,12 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 03:39:02 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 04:40:38 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/02 05:01:43 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
 #include <sys/time.h>
+#include "utils.h"
 
 int	is_leap(int year)
 {

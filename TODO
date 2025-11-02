@@ -1,0 +1,8 @@
+- add log method to the logger, it basically puts the current
+timestamp at the start of each log. logger->log(int fd, const char *msg) ??
+or logger->logerr(const char *msg) and logger->logout(const char *msg) or with a generic callback
+- refactor the `utils_putdate` with variadics, maybe use ft_printf??
+add this submodule to the project: https://github.com/yigtuyumz/printf if you use ft_printf
+- simplify Makefile's (if they can be simplified)
+- get rid of common things in logger & utils. find a way!
+- refactor the main.c !!!! and start the project ASAP!

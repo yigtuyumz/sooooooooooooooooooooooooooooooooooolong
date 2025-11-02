@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:29 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 04:19:52 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/02 05:00:14 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include <fcntl.h>
 #include "logger.h"
 
-// Heavily inspired the concept of `Dependency Injection`.
+// The design of this function is
+// heavily inspired the concept of `Dependency Injection`.
 // https://devmethodologies.blogspot.com/2012/07/dependency-injection.html
-// And the design of lib logger, kinda includes it.
 int	open_logfile(const char *path)
 {
 	int	fd;
