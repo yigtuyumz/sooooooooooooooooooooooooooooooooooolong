@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:22:37 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 05:08:40 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/03 20:40:17 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,35 +35,6 @@
 
 // submodule'ler ile birlikte git clone
 // git clone --recurse-submodules <repo-url>
-
-void	logger_init_hook(void *arg)
-{
-	t_logger	*logger;
-
-	logger = (t_logger *) arg;
-	logger->errfile = open_logfile("err.log");
-	logger->outfile = open_logfile("out.log");
-	utils_putstr(logger->outfile, "\n\n");
-	utils_putdate(logger->outfile);
-	if (logger->outfile != LOGGER_FD_FALLBACK)
-	{
-		utils_putstr(logger->outfile,
-			"============== LOGGER INITIALIZED ============\n");
-	}
-	else
-		utils_putstr(logger->outfile,
-			"LOGGER INIT FAILED, OUTPUTS TO STDERR\n");
-}
-
-void	logger_destroy_hook(void *arg)
-{
-	t_logger	*logger;
-
-	logger = (t_logger *) arg;
-	utils_putdate(logger->outfile);
-	utils_putstr(logger->outfile,
-		"============== LOGGER SHUTDOWN ==============\n");
-}
 
 void	destroy_mlx_window(void *mlx_ptr, void *win_ptr)
 {
@@ -107,11 +78,25 @@ void	create_mlx_window(t_logger *logger)
 // TODO: add LOGGER.log method, which displays timestamp in each log
 int	main(int argc __attribute__((unused)), char *argv[] __attribute__((unused)))
 {
-	t_logger	*logger;
+	t_logger_config	config;
+	t_logger		*logger;
 
-	logger = init_logger(logger_init_hook);
+	config.outfile_path = "out.log";
+	config.errfile_path = "err.log";
+	config.flags = 0;
+	logger = init_logger(&config);
+	if (!logger)
+	{
+		utils_putstr(STDERR_FILENO, "Logger init failed!\n");
+		return (1);
+	}
+	utils_putstr(logger->outfile, "\n\n");
+	utils_putdate(logger->outfile);
+	utils_putstr(logger->outfile, "LOGGER INITIALIZED\n");
 	create_mlx_window(logger);
 	utils_putstr(logger->outfile, "LOG = WOOD ?\n");
-	destroy_logger(&logger, logger_destroy_hook);
+	utils_putdate(logger->outfile);
+	utils_putstr(logger->outfile, "LOGGER SHUTDOWN\n");
+	destroy_logger(&logger);
 	return (0);
 }

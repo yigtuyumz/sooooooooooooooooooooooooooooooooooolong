@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/29 08:26:29 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 05:00:14 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/03 20:36:57 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,7 @@
 #include <fcntl.h>
 #include "logger.h"
 
-// The design of this function is
-// heavily inspired the concept of `Dependency Injection`.
-// https://devmethodologies.blogspot.com/2012/07/dependency-injection.html
-int	open_logfile(const char *path)
+static int	open_logfile(const char *path)
 {
 	int	fd;
 
@@ -30,32 +27,36 @@ int	open_logfile(const char *path)
 	return (fd);
 }
 
-void	close_logfile(int fd)
+static void	close_logfile(int fd)
 {
 	if (fd > 2)
 		(void) close(fd);
 }
 
-t_logger	*init_logger(void (*init_hook)(void *arg))
+t_logger	*init_logger(t_logger_config *config)
 {
 	t_logger	*logger;
 
 	logger = (t_logger *) malloc(sizeof(t_logger));
 	if (!logger)
 		return (NULL);
-	logger->errfile = LOGGER_FD_FALLBACK;
-	logger->outfile = LOGGER_FD_FALLBACK;
-	if (init_hook)
-		init_hook((void *) logger);
+	if (config)
+	{
+		logger->outfile = open_logfile(config->outfile_path);
+		logger->errfile = open_logfile(config->errfile_path);
+	}
+	else
+	{
+		logger->outfile = LOGGER_FD_FALLBACK;
+		logger->errfile = LOGGER_FD_FALLBACK;
+	}
 	return (logger);
 }
 
-void	destroy_logger(t_logger **logger, void (*cleanup_hook)(void *arg))
+void	destroy_logger(t_logger **logger)
 {
 	if (!logger || !(*logger))
 		return ;
-	if (cleanup_hook)
-		cleanup_hook((void *) *logger);
 	close_logfile((*logger)->errfile);
 	close_logfile((*logger)->outfile);
 	free(*logger);
