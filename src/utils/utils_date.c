@@ -6,14 +6,14 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 03:39:02 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 05:01:43 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/03 20:26:18 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include "utils.h"
 
-int	is_leap(int year)
+static int	is_leap(int year)
 {
 	if (year % 400 == 0)
 		return (366);
@@ -36,6 +36,9 @@ int	is_leap(int year)
 //
 // index 1 -> month january
 // 1 means `shift 22 bits`
+//
+//
+/*
 int	get_monthy(int val, int index)
 {
 	int	shift_count;
@@ -43,8 +46,9 @@ int	get_monthy(int val, int index)
 	shift_count = 24 - (2 * index);
 	return (((val >> shift_count) & 0b11) + 28);
 }
+*/
 
-void	get_day(t_mydate *mydate)
+static void	get_day(t_mydate *mydate)
 {
 	unsigned int	month_days;
 	int				temp;
@@ -55,7 +59,7 @@ void	get_day(t_mydate *mydate)
 	mydate->month = 1;
 	while (mydate->month <= 12)
 	{
-		temp = get_monthy(month_days, mydate->month);
+		temp = (((month_days >> (24 - (2 * mydate->month))) & 0b11) + 28);
 		if (mydate->day >= temp)
 		{
 			mydate->day -= temp;
@@ -69,7 +73,7 @@ void	get_day(t_mydate *mydate)
 	}
 }
 
-t_mydate	parse_date(struct timeval tv)
+static t_mydate	parse_date(struct timeval tv)
 {
 	t_mydate	mydate;
 	long		days;
