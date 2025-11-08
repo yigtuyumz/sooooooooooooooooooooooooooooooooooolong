@@ -4,7 +4,6 @@ AR	:= ar
 ARFLAGS := rcs
 SRC	:=	utils.c			\
 		utils_date.c	\
-		logger.c		\
 		utils_memory.c
 OBJ	:= $(SRC:.c=.o)
 NAME	:= utils.a

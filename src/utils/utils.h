@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 18:51:03 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/08 09:32:28 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/08 10:25:07 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,6 @@
 # define UTILS_H
 
 # include <stddef.h>
-
-# define LOGGER_FD_FALLBACK STDERR_FILENO
 
 typedef struct s_mydate
 {
@@ -28,20 +26,6 @@ typedef struct s_mydate
 	int				usecond;
 }	t_mydate;
 
-typedef struct s_logger_config
-{
-	const char	*outfile_path;
-	const char	*errfile_path;
-}	t_logger_config;
-
-typedef struct s_logger
-{
-	int	(*out)(int fd, const char *msg, ...);
-	int	(*err)(int fd, const char *msg, ...);
-	int	outfd;
-	int	errfd;
-}	t_logger;
-
 size_t		utils_strlen(const char *s);
 void		utils_putstr(int fd, const char *s);
 void		utils_putchar(int fd, const char c);
@@ -50,9 +34,5 @@ int			utils_endswith(const char *str, const char *val);
 char		*utils_strdup(const char *s);
 
 void		*utils_memset(void *s, int c, size_t n);
-
-t_logger	*init_logger(t_logger_config *config);
-void		destroy_logger(t_logger **logger);
-void		config_logger(t_logger *logger, t_logger_config *new_config);
 
 #endif
