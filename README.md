@@ -85,6 +85,58 @@ free(mlx_ptr);
 
 Destroying resources in the wrong order may cause memory leaks or segmentation faults.
 
+## Date Utility Implementation
+
+### Bit-Packed Month Days Algorithm
+
+The date utility uses a clever bit-packing technique to store month lengths efficiently. Each month's day count (28-31) is encoded using 2 bits:
+
+```
+Binary → Decimal → Days
+11100  → 28      → 00  (28 days)
+11101  → 29      → 01  (29 days)
+11110  → 30      → 10  (30 days)
+11111  → 31      → 11  (31 days)
+```
+
+Each hexadecimal digit represents the day counts of 2 consecutive months, starting from January:
+
+```
+Month order: Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec
+
+Non-leap year:
+11 00 11 10 11 10 11 11 10 11 10 11  →  0x00CEEFBB
+31 28 31 30 31 30 31 31 30 31 30 31
+
+Leap year:
+11 01 11 10 11 10 11 11 10 11 10 11  →  0x00DEEFBB
+31 29 31 30 31 30 31 31 30 31 30 31
+```
+
+### Extracting Month Days
+
+To retrieve a specific month's day count:
+
+```c
+int get_month_days(int val, int index)
+{
+    int shift_count;
+    
+    // Index 1 = January (shift 22 bits right)
+    // Index 2 = February (shift 20 bits right)
+    // ...
+    shift_count = 24 - (2 * index);
+    
+    // Extract 2 bits and add base value 28
+    return (((val >> shift_count) & 0b11) + 28);
+}
+```
+
+This approach:
+- Uses only 24 bits (3 bytes) instead of 12 integers (48 bytes on 32-bit systems)
+- Provides O(1) lookup time
+- Handles leap years by simply changing one hex digit (0xCE → 0xDE)
+
 ## Building
 
 ```bash

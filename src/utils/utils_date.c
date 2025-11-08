@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 03:39:02 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/08 06:25:13 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/08 10:38:32 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,30 +24,6 @@ static int	is_leap(int year)
 		return (366);
 	return (365);
 }
-
-// 28 -> 11100    | 00
-// 29 -> 11101    | 01
-// 30 -> 11110    | 10
-// 31 -> 11111    | 11
-// each hex digit represents day counts of 2 sequent months
-// starting from january
-//  11 00 11 10 11 10 11 11 10 11 10 11    | 0x00CEEFBB | NOT LEAP YEAR
-//  11 01 11 10 11 10 11 11 10 11 10 11    | 0x00DEEFBB | LEAP YEAR
-// month_days = {31,28,31,30,31,30,31,31,30,31,30,31}
-//
-// index 1 -> month january
-// 1 means `shift 22 bits`
-//
-//
-/*
-int	get_monthy(int val, int index)
-{
-	int	shift_count;
-
-	shift_count = 24 - (2 * index);
-	return (((val >> shift_count) & 0b11) + 28);
-}
-*/
 
 static void	get_day(t_mydate *mydate)
 {
