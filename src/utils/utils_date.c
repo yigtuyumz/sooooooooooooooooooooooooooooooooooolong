@@ -6,12 +6,13 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 03:39:02 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/03 20:26:18 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/08 06:25:13 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <sys/time.h>
 #include "utils.h"
+#include "../../printf/ft_fprintf.h"
 
 static int	is_leap(int year)
 {
@@ -93,27 +94,18 @@ static t_mydate	parse_date(struct timeval tv)
 
 void	utils_putdate(int fd)
 {
-	t_mydate		mydate;
 	struct timeval	tv;
+	t_mydate		mydate;
 	int				res;
 
 	res = gettimeofday(&tv, NULL);
 	if (res == -1)
+	{
+		(void) ft_fprintf(fd, "[01/01/1970 - 00:00:00:00]");
 		return ;
+	}
 	mydate = parse_date(tv);
-	utils_putstr(fd, "[ ");
-	utils_put_unsigned_nb(fd, mydate.hour);
-	utils_putchar(fd, ':');
-	utils_put_unsigned_nb(fd, mydate.minute);
-	utils_putchar(fd, ':');
-	utils_put_unsigned_nb(fd, mydate.second);
-	utils_putchar(fd, ':');
-	utils_put_unsigned_nb(fd, mydate.usecond);
-	utils_putstr(fd, " - ");
-	utils_put_unsigned_nb(fd, mydate.day);
-	utils_putchar(fd, '/');
-	utils_put_unsigned_nb(fd, mydate.month);
-	utils_putchar(fd, '/');
-	utils_put_unsigned_nb(fd, mydate.year);
-	utils_putstr(fd, " ] ");
+	(void) ft_fprintf(fd, "[ %d/%d/%d - %d:%d:%d%d ] ",
+		mydate.day, mydate.month, mydate.year, mydate.hour,
+		mydate.minute, mydate.second, mydate.usecond);
 }

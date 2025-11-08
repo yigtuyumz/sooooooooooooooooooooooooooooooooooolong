@@ -6,11 +6,12 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 18:51:06 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/02 04:35:40 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/07 21:56:53 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 size_t	utils_strlen(const char *s)
 {
@@ -35,44 +36,42 @@ void	utils_putstr(int fd, const char *s)
 	write(fd, s, len);
 }
 
-void	utils_put_unsigned_nb(int fd, unsigned int nb)
+int	utils_endswith(const char *str, const char *val)
 {
-	char	buffer[12];
-	int		i;
+	size_t	len_str;
+	size_t	len_val;
+	size_t	i;
 
-	if (nb < 10)
-	{
-		utils_putchar(fd, '0');
-		utils_putchar(fd, '0' + nb);
-		return ;
-	}
+	len_str = utils_strlen(str);
+	len_val = utils_strlen(val);
+	if (len_val > len_str)
+		return (0);
 	i = 0;
-	while (nb > 0)
+	while (i < len_val)
 	{
-		buffer[i++] = '0' + (nb % 10);
-		nb /= 10;
+		if (*(str + len_str - len_val + i) != *(val + i))
+			return (0);
+		i++;
 	}
-	while (i > 0)
-		utils_putchar(fd, buffer[--i]);
+	return (1);
 }
 
-void	ft_putnbr_fd(int n, int fd)
+char	*utils_strdup(const char *s)
 {
-	if (n < 0)
+	size_t	str_len;
+	size_t	iter;
+	char	*ret;
+
+	str_len = utils_strlen(s);
+	ret = (char *) malloc(sizeof(char) * (str_len + 1));
+	if (!ret)
+		return (NULL);
+	iter = 0;
+	while (iter < str_len)
 	{
-		if (n == -2147483648)
-		{
-			write(fd, "-2147483648", 11);
-			return ;
-		}
-		utils_putchar(fd, '-');
-		n = -n;
+		*(ret + iter) = *(s + iter);
+		iter++;
 	}
-	if (n >= 10)
-	{
-		ft_putnbr_fd((n / 10), fd);
-		n = n % 10;
-	}
-	if (n < 10)
-		write(fd, &("0123456789"[n]), 1);
+	*(ret + iter) = 0;
+	return (ret);
 }

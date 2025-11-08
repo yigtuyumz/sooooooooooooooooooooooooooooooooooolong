@@ -63,3 +63,4 @@ _*.c
 *.txt
 test.c
 *.log
+!rgb.txt
