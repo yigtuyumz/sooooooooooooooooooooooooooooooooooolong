@@ -1,42 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_validate.c                                     :+:      :+:    :+:   */
+/*   map_check.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/09 21:46:46 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 21:46:47 by yuyumaz          ###   ########.fr       */
+/*   Created: 2025/11/09 21:46:34 by yuyumaz           #+#    #+#             */
+/*   Updated: 2025/11/09 21:46:36 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "solong.h"
+#include <fcntl.h>
 #include <unistd.h>
 
-int	map_validate(t_map *map)
+int	map_check_extension(const char *path)
 {
-	if (!map || !map->grid || map->rows < 3 || map->cols < 3)
-	{
-		ft_fprintf(STDERR_FILENO, "Error\nInvalid map dimensions\n");
+	if (!path)
 		return (0);
-	}
-	if (!check_rectangular(map))
+	if (!utils_endswith(path, ".ber"))
 		return (0);
-	if (!check_walls(map))
-	{
-		ft_fprintf(STDERR_FILENO, "Error\nMap not surrounded by walls\n");
+	return (1);
+}
+
+int	map_check_file_exists(const char *path)
+{
+	int	fd;
+
+	if (!path)
 		return (0);
-	}
-	if (!check_elements(map))
-	{
-		ft_fprintf(STDERR_FILENO, "Error\nInvalid map elements\n");
+	fd = open(path, O_RDONLY);
+	if (fd < 0)
 		return (0);
-	}
-	if (!check_path(map))
-	{
-		ft_fprintf(STDERR_FILENO,
-			"Error\nNo valid path to exit/collectibles\n");
-		return (0);
-	}
+	close(fd);
 	return (1);
 }

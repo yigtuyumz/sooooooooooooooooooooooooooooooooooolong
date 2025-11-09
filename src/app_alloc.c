@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/08 09:28:23 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 20:31:13 by yuyumaz          ###   ########.fr       */
+/*   Created: 2025/11/09 21:45:36 by yuyumaz           #+#    #+#             */
+/*   Updated: 2025/11/09 21:45:38 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,24 @@ void	*alloc_map(t_app **app)
 	return (*app);
 }
 
+void	*alloc_game(t_app **app)
+{
+	if (!app || !*app)
+		return (NULL);
+	(*app)->game = (t_game *)malloc(sizeof(t_game));
+	if (!(*app)->game)
+	{
+		ft_fprintf(STDERR_FILENO, "malloc for t_game failed!\n");
+		return (NULL);
+	}
+	(*app)->game->moves = 0;
+	(*app)->game->collected = 0;
+	(*app)->game->player_x = 0;
+	(*app)->game->player_y = 0;
+	(*app)->game->finished = 0;
+	return (*app);
+}
+
 t_app	*alloc_app(void)
 {
 	t_app	*app;
@@ -66,9 +84,12 @@ t_app	*alloc_app(void)
 	app->map = NULL;
 	app->mlx_ptr = NULL;
 	app->window = NULL;
+	app->game = NULL;
 	if (!alloc_window(&app))
 		return (free_app(&app));
 	if (!alloc_map(&app))
+		return (free_app(&app));
+	if (!alloc_game(&app))
 		return (free_app(&app));
 	return (app);
 }

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/08 09:32:51 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 20:38:06 by yuyumaz          ###   ########.fr       */
+/*   Created: 2025/11/09 21:45:53 by yuyumaz           #+#    #+#             */
+/*   Updated: 2025/11/09 21:45:54 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,41 +26,24 @@ void	free_window(t_app **app)
 	(*app)->window = NULL;
 }
 
-void	free_map(t_app **app)
+void	free_game(t_app **app)
 {
-	int	i;
-
-	if (!app || !*app || !(*app)->map)
+	if (!app || !*app || !(*app)->game)
 		return ;
-	if ((*app)->map->grid)
-	{
-		i = 0;
-		while ((*app)->map->grid[i])
-		{
-			free((void *)(*app)->map->grid[i]);
-			(*app)->map->grid[i] = NULL;
-			i++;
-		}
-		free((*app)->map->grid);
-		(*app)->map->grid = NULL;
-	}
-	(*app)->map->fd = -1;
-	(*app)->map->path = NULL;
-	(*app)->map->rows = -1;
-	(*app)->map->cols = -1;
-	(*app)->map->player_x = -1;
-	(*app)->map->player_y = -1;
-	(*app)->map->exit_x = -1;
-	(*app)->map->exit_y = -1;
-	(*app)->map->collectibles = -1;
-	free((void *)(*app)->map);
-	(*app)->map = NULL;
+	(*app)->game->moves = 0;
+	(*app)->game->collected = 0;
+	(*app)->game->player_x = 0;
+	(*app)->game->player_y = 0;
+	(*app)->game->finished = 0;
+	free((void *)(*app)->game);
+	(*app)->game = NULL;
 }
 
 void	*free_app(t_app **app)
 {
 	if (!app || !*app)
 		return (NULL);
+	free_game(app);
 	free_map(app);
 	free_window(app);
 	if ((*app)->mlx_ptr)

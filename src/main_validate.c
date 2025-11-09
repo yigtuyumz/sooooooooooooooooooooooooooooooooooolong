@@ -1,41 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   map_validate.c                                     :+:      :+:    :+:   */
+/*   main_validate.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/09 21:46:46 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 21:46:47 by yuyumaz          ###   ########.fr       */
+/*   Created: 2025/11/09 21:46:17 by yuyumaz           #+#    #+#             */
+/*   Updated: 2025/11/09 21:46:19 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "solong.h"
 #include <unistd.h>
 
-int	map_validate(t_map *map)
+int	validate_args(int argc, char *argv[])
 {
-	if (!map || !map->grid || map->rows < 3 || map->cols < 3)
+	if (argc != 2)
 	{
-		ft_fprintf(STDERR_FILENO, "Error\nInvalid map dimensions\n");
+		ft_fprintf(STDERR_FILENO, "Error\nUsage: %s <map.ber>\n", argv[0]);
 		return (0);
 	}
-	if (!check_rectangular(map))
-		return (0);
-	if (!check_walls(map))
-	{
-		ft_fprintf(STDERR_FILENO, "Error\nMap not surrounded by walls\n");
-		return (0);
-	}
-	if (!check_elements(map))
-	{
-		ft_fprintf(STDERR_FILENO, "Error\nInvalid map elements\n");
-		return (0);
-	}
-	if (!check_path(map))
+	if (!map_check_extension(argv[1]))
 	{
 		ft_fprintf(STDERR_FILENO,
-			"Error\nNo valid path to exit/collectibles\n");
+			"Error\nMap file must have .ber extension\n");
+		return (0);
+	}
+	if (!map_check_file_exists(argv[1]))
+	{
+		ft_fprintf(STDERR_FILENO,
+			"Error\nCannot open map file: %s\n", argv[1]);
 		return (0);
 	}
 	return (1);

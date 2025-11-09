@@ -20,11 +20,21 @@ FPRINTF_LIB	:=	$(FPRINTF_DIR)/libftfprintf.a
 
 SRC_DIR			:=	src
 OBJ_DIR			:=	obj
-SRC_FILES		:=	main.c		\
-					app_alloc.c	\
-					app_free.c	\
-					map.c		\
-					map_validate.c
+SRC_FILES		:=	main.c					\
+					main_validate.c			\
+					main_init.c				\
+					main_load.c				\
+					app_alloc.c				\
+					app_free.c				\
+					app_free_map.c			\
+					map.c					\
+					map_check.c				\
+					map_list.c				\
+					map_read_list.c			\
+					map_validate.c			\
+					map_check_shape.c		\
+					map_check_elements.c	\
+					map_check_path.c
 SRC				:=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ				:=	$(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
