@@ -1,0 +1,4 @@
+- rewrite map validation system in acordance of norms
+- simplify code structure
+- check every cases for maps! the project must not leak memory.
+- update the README.md, append added features.

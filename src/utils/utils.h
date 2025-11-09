@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/31 18:51:03 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/08 10:25:07 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 17:33:22 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,12 @@ typedef struct s_mydate
 size_t		utils_strlen(const char *s);
 void		utils_putstr(int fd, const char *s);
 void		utils_putchar(int fd, const char c);
-void		utils_putdate(int fd);
 int			utils_endswith(const char *str, const char *val);
 char		*utils_strdup(const char *s);
+//void		utils_putdate(int fd);
 
-void		*utils_memset(void *s, int c, size_t n);
+char		*get_next_line(int fd);
+
+// void		*utils_memset(void *s, int c, size_t n);
 
 #endif
