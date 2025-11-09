@@ -10,8 +10,8 @@ MLX_FLAGS		:=	-L$(MLX_DIR) -lmlx -lXext -lX11 -lm
 
 UTILS_DIR		:=	src/utils
 UTILS_SRC		:=	$(UTILS_DIR)/utils.c		\
-					$(UTILS_DIR)/utils_date.c	\
-					$(UTILS_DIR)/utils_memory.c
+					$(UTILS_DIR)/gnl.c			\
+					$(UTILS_DIR)/gnl_utils.c
 UTILS_LIB		:=	$(UTILS_DIR)/utils.a
 
 FPRINTF_DIR	:=	printf
@@ -22,7 +22,9 @@ SRC_DIR			:=	src
 OBJ_DIR			:=	obj
 SRC_FILES		:=	main.c		\
 					app_alloc.c	\
-					app_free.c
+					app_free.c	\
+					map.c		\
+					map_validate.c
 SRC				:=	$(addprefix $(SRC_DIR)/, $(SRC_FILES))
 OBJ				:=	$(addprefix $(OBJ_DIR)/, $(SRC_FILES:.c=.o))
 
@@ -53,7 +55,7 @@ $(UTILS_LIB): $(UTILS_SRC)
 
 clean:
 	rm -rf $(OBJ_DIR)
-	$(MAKE) -C $(MLX_DIR) clean
+#	$(MAKE) -C $(MLX_DIR) clean
 	$(MAKE) -C $(UTILS_DIR) clean
 	$(MAKE) -C $(FPRINTF_DIR) clean
 

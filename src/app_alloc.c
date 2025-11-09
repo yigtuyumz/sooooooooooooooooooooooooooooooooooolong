@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   app.c                                              :+:      :+:    :+:   */
+/*   app_alloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 09:28:23 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/08 09:33:30 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 20:31:13 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,14 @@ void	*alloc_map(t_app **app)
 	}
 	(*app)->map->fd = -1;
 	(*app)->map->path = NULL;
+	(*app)->map->grid = NULL;
+	(*app)->map->rows = -1;
+	(*app)->map->cols = -1;
+	(*app)->map->player_x = -1;
+	(*app)->map->player_y = -1;
+	(*app)->map->exit_x = -1;
+	(*app)->map->exit_y = -1;
+	(*app)->map->collectibles = -1;
 	return (*app);
 }
 

@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/08 09:32:51 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/08 09:33:34 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 20:38:06 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,31 @@ void	free_window(t_app **app)
 
 void	free_map(t_app **app)
 {
+	int	i;
+
 	if (!app || !*app || !(*app)->map)
 		return ;
+	if ((*app)->map->grid)
+	{
+		i = 0;
+		while ((*app)->map->grid[i])
+		{
+			free((void *)(*app)->map->grid[i]);
+			(*app)->map->grid[i] = NULL;
+			i++;
+		}
+		free((*app)->map->grid);
+		(*app)->map->grid = NULL;
+	}
 	(*app)->map->fd = -1;
 	(*app)->map->path = NULL;
+	(*app)->map->rows = -1;
+	(*app)->map->cols = -1;
+	(*app)->map->player_x = -1;
+	(*app)->map->player_y = -1;
+	(*app)->map->exit_x = -1;
+	(*app)->map->exit_y = -1;
+	(*app)->map->collectibles = -1;
 	free((void *)(*app)->map);
 	(*app)->map = NULL;
 }

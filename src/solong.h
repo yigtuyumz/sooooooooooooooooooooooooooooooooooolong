@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 02:22:11 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/08 09:29:23 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 17:58:01 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,24 @@
 # define WIN_HEIGHT 300
 # define WIN_NAME "So f****** long!"
 
+typedef struct s_map_node
+{
+	char				*line;
+	struct s_map_node	*next;
+}	t_map_node;
+
 typedef struct s_map
 {
 	const char		*path;
 	int				fd;
+	char			**grid;
+	int				rows;
+	int				cols;
+	int				player_x;
+	int				player_y;
+	int				exit_x;
+	int				exit_y;
+	int				collectibles;
 }	t_map;
 
 typedef struct s_window
@@ -54,5 +68,9 @@ void	*alloc_map(t_app **app);
 void	free_map(t_app **app);
 void	*free_app(t_app **app);
 t_app	*alloc_app(void);
+int		map_read(t_map *map, const char *path);
+int		map_validate(t_map *map);
+int		map_check_extension(const char *path);
+int		map_check_file_exists(const char *path);
 
 #endif
