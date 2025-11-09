@@ -6,12 +6,38 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 18:00:00 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 17:55:15 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 21:01:31 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "solong.h"
 #include <unistd.h>
+
+static int	check_rectangular(t_map *map)
+{
+	int	i;
+	int	len;
+
+	if (!map || !map->grid || map->rows == 0)
+		return (0);
+	i = 0;
+	while (i < map->rows)
+	{
+		len = utils_strlen(map->grid[i]);
+		if (len == 0)
+		{
+			ft_fprintf(STDERR_FILENO, "Error\nEmpty line in map\n");
+			return (0);
+		}
+		if (len != map->cols)
+		{
+			ft_fprintf(STDERR_FILENO, "Error\nMap is not rectangular\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
 
 static int	check_walls(t_map *map)
 {
@@ -147,6 +173,8 @@ int	map_validate(t_map *map)
 		ft_fprintf(STDERR_FILENO, "Error\nInvalid map dimensions\n");
 		return (0);
 	}
+	if (!check_rectangular(map))
+		return (0);
 	if (!check_walls(map))
 	{
 		ft_fprintf(STDERR_FILENO, "Error\nMap not surrounded by walls\n");
