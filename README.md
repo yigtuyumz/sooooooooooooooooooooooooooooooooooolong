@@ -2,6 +2,125 @@
 
 A 2D game project using MiniLibX graphics library.
 
+## Project Overview
+
+So Long is a simple 2D game where the player must collect all collectibles and reach the exit. The game implements:
+- Map parsing and validation
+- Floodfill pathfinding algorithm
+- MiniLibX graphics rendering
+- Memory-safe resource management
+
+## Usage
+
+```bash
+./solong <map.ber>
+```
+
+### Map File Requirements
+
+- File must have `.ber` extension
+- Map must be rectangular
+- Map must be surrounded by walls (`1`)
+- Must contain exactly one player (`P`)
+- Must contain exactly one exit (`E`)
+- Must contain at least one collectible (`C`)
+- All collectibles and exit must be reachable from player position
+
+### Map Characters
+
+| Character | Description |
+|-----------|-------------|
+| `1` | Wall |
+| `0` | Empty space |
+| `P` | Player starting position |
+| `E` | Exit |
+| `C` | Collectible |
+
+### Example Map
+
+```
+1111111111111111111111111111111111
+1E0000000000000C00000C000000000001
+1010010100100000101001000000010101
+1010010010101010001001000000010101
+1P0000000C00C0000000000000000000C1
+1111111111111111111111111111111111
+```
+
+## Map Validation System
+
+The map validation uses a **floodfill algorithm** to ensure all game objectives are reachable:
+
+### Validation Steps
+
+1. **File Checks**
+   - Extension validation (`.ber`)
+   - File existence and readability
+
+2. **Structural Validation**
+   - Rectangular shape verification
+   - Wall enclosure check (all edges are walls)
+   - Minimum dimensions (3x3)
+
+3. **Element Validation**
+   - Exactly 1 player (`P`)
+   - Exactly 1 exit (`E`)
+   - At least 1 collectible (`C`)
+   - Only valid characters (`1`, `0`, `P`, `E`, `C`)
+
+4. **Pathfinding Validation** (Floodfill)
+   - Player can reach the exit
+   - Player can collect all collectibles
+   - No unreachable areas
+
+### Floodfill Algorithm
+
+The floodfill algorithm recursively explores the map from the player's starting position:
+
+```c
+// Pseudo-code
+floodfill(x, y):
+    if position is wall or already visited:
+        return
+    mark position as visited
+    if position is exit: mark exit as reachable
+    if position is collectible: mark collectible as found
+    
+    floodfill(x+1, y)  // right
+    floodfill(x-1, y)  // left
+    floodfill(x, y+1)  // down
+    floodfill(x, y-1)  // up
+```
+
+This ensures all required game elements are accessible before starting the game.
+
+### Error Messages
+
+- `Error\nUsage: ./solong <map.ber>` - Invalid number of arguments
+- `Error\nMap file must have .ber extension` - Wrong file extension
+- `Error\nCannot open map file` - File doesn't exist or not readable
+- `Error\nInvalid map dimensions` - Map too small or not rectangular
+- `Error\nMap not surrounded by walls` - Missing wall borders
+- `Error\nInvalid map elements` - Wrong number of P/E/C or invalid characters
+- `Error\nNo valid path to exit/collectibles` - Unreachable objectives
+
+## Map Reading Implementation
+
+The map reader uses a **linked list approach** for efficient memory usage:
+
+1. Read file line by line using `get_next_line()`
+2. Store each line in a linked list node
+3. Count total rows during reading
+4. Convert linked list to `char **` array
+5. Extract column count from first row
+6. Clean up newline characters
+
+This approach:
+- Single-pass file reading (no need to read file twice)
+- Dynamic memory allocation (handles any map size)
+- Memory efficient (no realloc needed)
+- Clean separation between reading and processing
+
 ## MiniLibX Manual Pages Installation
 
 To install MiniLibX manual pages system-wide:
@@ -144,4 +263,54 @@ make          # Build project
 make clean    # Remove object files
 make fclean   # Remove all generated files
 make re       # Rebuild everything
+```
+
+## Testing
+
+```bash
+# Test with valid map
+./solong maps/pass.ber
+
+# Test with invalid map (unreachable areas)
+./solong maps/fail.ber
+
+# Memory leak check
+valgrind --leak-check=full ./solong maps/pass.ber
+```
+
+## Project Structure
+
+```
+.
+├── src/
+│   ├── main.c              # Entry point and argument handling
+│   ├── map.c               # Map reading and file validation
+│   ├── map_validate.c      # Map validation and floodfill
+│   ├── app_alloc.c         # Memory allocation
+│   ├── app_free.c          # Memory deallocation
+│   ├── solong.h            # Main header file
+│   └── utils/              # Utility functions
+│       ├── utils.c
+│       ├── gnl.c           # Get next line implementation
+│       └── utils.h
+├── maps/                   # Map files
+│   ├── pass.ber           # Valid test map
+│   └── fail.ber           # Invalid test map (for testing)
+├── printf/                 # Custom fprintf implementation
+├── minilibx-linux/        # MiniLibX graphics library
+└── Makefile
+```
+
+## Memory Management
+
+The project implements strict memory management:
+- All allocated memory is properly freed
+- Valgrind reports: **0 memory leaks**
+- Error handling includes memory cleanup
+- Linked list intermediate storage is freed after conversion
+
+```
+HEAP SUMMARY:
+  total heap usage: 43 allocs, 43 frees
+All heap blocks were freed -- no leaks are possible
 ```
