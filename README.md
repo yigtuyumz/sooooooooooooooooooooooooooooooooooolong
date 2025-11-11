@@ -9,6 +9,30 @@ So Long is a simple 2D game where the player must collect all collectibles and r
 - Floodfill pathfinding algorithm
 - MiniLibX graphics rendering
 - Memory-safe resource management
+- Fixed window size with dynamic tile scaling
+
+## Window and Rendering
+
+The game uses a **fixed window size** of **1152x864 pixels** with a **base tile size of 48x48 pixels**. The actual tile dimensions are calculated dynamically based on the map size:
+
+```c
+tile_width = WINDOW_WIDTH / map_cols
+tile_height = WINDOW_HEIGHT / map_rows
+```
+
+This means:
+- Window size is always constant (1152x864)
+- Tiles scale to fit the map within the window
+- Larger maps = smaller tiles
+- Smaller maps = larger tiles
+- Maximum comfortable map size: 24 columns x 18 rows (at 48x48)
+
+### Rendering Colors
+- **Walls (1)**: Gray (`0x808080`)
+- **Empty space (0)**: Black (`0x000000`)
+- **Player (P)**: Green (`0x00FF00`)
+- **Exit (E)**: Red (`0xFF0000`)
+- **Collectible (C)**: Yellow (`0xFFFF00`)
 
 ## Usage
 
@@ -314,3 +338,6 @@ HEAP SUMMARY:
   total heap usage: 43 allocs, 43 frees
 All heap blocks were freed -- no leaks are possible
 ```
+
+Thanks to tileset creator
+https://toadzillart.itch.io/dungeons-pack

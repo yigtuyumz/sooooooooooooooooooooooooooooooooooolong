@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 21:45:36 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 21:45:38 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 21:58:53 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ void	*alloc_window(t_app **app)
 	}
 	(*app)->window->width = 0;
 	(*app)->window->height = 0;
+	(*app)->window->tile_width = 0;
+	(*app)->window->tile_height = 0;
 	(*app)->window->name = NULL;
 	(*app)->window->win_ptr = NULL;
 	return (*app);

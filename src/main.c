@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 21:45:29 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 21:45:31 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 21:58:51 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int	main(int argc, char *argv[])
 		free_app(&app);
 		exit(EXIT_FAILURE);
 	}
-	sleep(1);
+	render_map(app);
+	sleep(2);
 	free_app(&app);
 	return (0);
 }

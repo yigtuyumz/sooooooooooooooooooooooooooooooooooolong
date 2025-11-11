@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 21:45:58 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 21:45:59 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 21:58:54 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,16 +24,13 @@ static void	init_game_state(t_app *app)
 
 static int	init_window(t_app *app)
 {
-	int	width;
-	int	height;
-
-	width = app->map->cols * TILE_SIZE;
-	height = app->map->rows * TILE_SIZE;
-	app->window->width = width;
-	app->window->height = height;
+	app->window->width = WIN_WIDTH;
+	app->window->height = WIN_HEIGHT;
+	app->window->tile_width = WIN_WIDTH / app->map->cols;
+	app->window->tile_height = WIN_HEIGHT / app->map->rows;
 	app->window->name = WIN_NAME;
-	app->window->win_ptr = mlx_new_window(app->mlx_ptr, width, height,
-			(char *)WIN_NAME);
+	app->window->win_ptr = mlx_new_window(app->mlx_ptr,
+			WIN_WIDTH, WIN_HEIGHT, (char *)WIN_NAME);
 	if (!app->window->win_ptr)
 	{
 		ft_fprintf(STDERR_FILENO, "Error\nmlx_new_window() failed!\n");

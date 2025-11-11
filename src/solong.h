@@ -6,7 +6,7 @@
 /*   By: yuyumaz <yuyumaz@student.42kocaeli.com.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/09 21:46:53 by yuyumaz           #+#    #+#             */
-/*   Updated: 2025/11/09 21:46:58 by yuyumaz          ###   ########.fr       */
+/*   Updated: 2025/11/09 21:58:49 by yuyumaz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,9 @@
 # define PIXEL_GREEN 0x0000FF00
 # define PIXEL_BLUE  0x000000FF
 
-# define TILE_SIZE 32
+# define WIN_WIDTH 480
+# define WIN_HEIGHT 480
+# define BASE_TILE_SIZE 48
 # define WIN_NAME "So f****** long!"
 
 typedef struct s_map_node
@@ -61,6 +63,8 @@ typedef struct s_window
 	const char	*name;
 	int			width;
 	int			height;
+	int			tile_width;
+	int			tile_height;
 }	t_window;
 
 typedef struct s_app
@@ -94,5 +98,6 @@ t_map_node	*create_node(char *line);
 void		free_list(t_map_node *head);
 char		**list_to_array(t_map_node *head, int rows);
 t_map_node	*read_to_list(int fd, int *row_count);
+void		render_map(t_app *app);
 
 #endif
